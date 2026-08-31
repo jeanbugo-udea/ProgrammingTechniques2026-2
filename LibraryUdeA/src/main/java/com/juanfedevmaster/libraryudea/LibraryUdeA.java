@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import library.models.Book;
 import library.models.Catalog;
+import library.models.ResultBook;
 
 /**
  *
@@ -48,17 +49,35 @@ public class LibraryUdeA {
                     String author = scan.nextLine().trim();
                     System.out.println("Enter the amount:");
                     int amount = Integer.parseInt(scan.nextLine().trim());
-                    catalog.registerBook(isbn, title, author, amount);
+                    ResultBook registerResult = catalog.registerBook(isbn, title, author, amount);
+                    if (registerResult == ResultBook.BOOK_EXIST) {
+                        System.out.println("A book with that isbn already exists.");
+                    } else {
+                        System.out.println("Book registered successfully.");
+                    }
                     break;
 
                 case 2: // Vender de Libro
                     System.out.println("Enter the isbn code of the book to buy:");
-                    String isbnSell = scan.next();
+                    String isbnSell = scan.nextLine().trim();
 
                     System.out.println("Enter the amount of books:");
-                    int amountSell = scan.nextInt();
+                    int amountSell = Integer.parseInt(scan.nextLine().trim());
 
-                    catalog.sellBook(isbnSell, amountSell);
+                    ResultBook sellResult = catalog.sellBook(isbnSell, amountSell);
+                    switch (sellResult) {
+                        case SUCCESSFUL:
+                            System.out.println("Sale completed successfully.");
+                            break;
+                        case NOT_FOUND:
+                            System.out.println("Book not found.");
+                            break;
+                        case NOT_STOCK:
+                            System.out.println("Not enough stock available.");
+                            break;
+                        default:
+                            System.out.println("Could not complete the sale.");
+                    }
 
                     break;
                 case 3:
