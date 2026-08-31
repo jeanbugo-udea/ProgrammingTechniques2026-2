@@ -3,6 +3,7 @@
  */
 package com.juanfedevmaster.libraryudea;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import library.models.Book;
 import library.models.Catalog;
@@ -12,6 +13,13 @@ import library.models.Catalog;
  * @author juanfe
  */
 public class LibraryUdeA {
+
+    public static void printBook (Book book){
+        System.out.println("Title:  " + book.getTitle());
+        System.out.println("Author: " + book.getAuthor());
+        System.out.println("ISBN:   " + book.getIsbn());
+        System.out.println("Amount: " + book.getAmount());
+    }
 
     public static void main(String[] args) {
 
@@ -23,7 +31,9 @@ public class LibraryUdeA {
         do {
             System.out.println("1. Register book");
             System.out.println("2. Buy a book");
-            System.out.println("3. Exit");
+            System.out.println("3. list books");
+            System.out.println("4.  search book");
+            System.out.println("5. Exit");
 
             System.out.println("Enter the option:");
             option = Integer.parseInt(scan.nextLine().trim());
@@ -40,7 +50,7 @@ public class LibraryUdeA {
                     int amount = Integer.parseInt(scan.nextLine().trim());
                     catalog.registerBook(isbn, title, author, amount);
                     break;
-                    
+
                 case 2: // Vender de Libro
                     System.out.println("Enter the isbn code of the book to buy:");
                     String isbnSell = scan.next();
@@ -53,7 +63,31 @@ public class LibraryUdeA {
                     break;
                 case 3:
                     // Show all books of the catalog.
+                    ArrayList<Book> books = catalog.getBooks();
+                    if (books.isEmpty()){
+                        System.out.println("Catalog is empty: ");
+                    }
+                    else {
+                        System.out.println("***** List Books *****");
+                        for (Book book : books) {
+                            printBook(book);
+                            System.out.println("...............");
+                        }
+                    }
                     break;
+
+                case 4:
+                    System.out.println("Enter the isbn code:");
+                    String searchIsbn = scan.nextLine().trim();
+                    Book aBook = catalog.findByIsbn(searchIsbn);
+                    if (aBook != null) {
+                        printBook(aBook);
+                    }
+                    else{
+                        System.out.println("Book not found");
+                    }
+                    break;
+
                 default:
                     option = 0;
             }
